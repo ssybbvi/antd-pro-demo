@@ -1,10 +1,25 @@
 import request from '@/utils/request';
+import axios from 'axios';
 import { TableListParams } from './data.d';
 
 export async function queryRule(params?: TableListParams) {
-  return request('/api/rule', {
-    params,
-  });
+  const result = (
+    await axios({
+      method: 'get',
+      url: 'http://127.0.0.1:5000/api/v1/appInfo/',
+      data: params,
+    })
+  ).data;
+
+  return {
+    data: result.appInfos,
+    total: result.appInfos.length,
+    success: true,
+  };
+
+  // return request('/api/rule', {
+  //   params,
+  // });
 }
 
 export async function removeRule(params: { key: number[] }) {

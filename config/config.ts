@@ -112,10 +112,16 @@ export default {
               authority: ['admin'],
             },
             {
-              name: '查询表格',
+              name: '游戏列表',
               icon: 'smile',
               path: '/appinfolist',
               component: './AppInfoList',
+            },
+            {
+              name: '个人设置',
+              icon: 'smile',
+              path: '/appinfo/:_id',
+              component: './AppInfo',
             },
             {
               component: './404',
@@ -151,7 +157,7 @@ export default {
         resourcePath: string;
       },
       _: string,
-      localName: string
+      localName: string,
     ) => {
       if (
         context.resourcePath.includes('node_modules') ||

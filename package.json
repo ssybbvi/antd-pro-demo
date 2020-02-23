@@ -57,10 +57,13 @@
     "not ie <= 10"
   ],
   "dependencies": {
+    "@ant-design/compatible": "^0.0.1-rc.0",
+    "@ant-design/icons": "^4.0.0-alpha.19",
     "@ant-design/pro-layout": "^4.10.0",
     "@ant-design/pro-table": "^1.0.22",
     "@antv/data-set": "^0.10.2",
     "antd": "^3.23.6",
+    "axios": "^0.19.2",
     "classnames": "^2.2.6",
     "dva": "^2.6.0-beta.16",
     "lodash": "^4.17.11",
@@ -81,6 +84,7 @@
   },
   "devDependencies": {
     "@ant-design/pro-cli": "^1.0.14",
+    "@types/axios": "^0.14.0",
     "@types/classnames": "^2.2.7",
     "@types/express": "^4.17.0",
     "@types/history": "^4.7.2",

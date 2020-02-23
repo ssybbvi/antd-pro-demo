@@ -1,8 +1,11 @@
+/* eslint-disable no-underscore-dangle */
+
 import { Button, Divider, Dropdown, Form, Icon, Menu, message } from 'antd';
 import React, { useState, useRef } from 'react';
 import { FormComponentProps } from 'antd/es/form';
 import { PageHeaderWrapper } from '@ant-design/pro-layout';
 import ProTable, { ProColumns, ActionType } from '@ant-design/pro-table';
+import { Link } from 'umi';
 import CreateForm from './components/CreateForm';
 import UpdateForm, { FormValueType } from './components/UpdateForm';
 import { TableListItem } from './data.d';
@@ -62,7 +65,7 @@ const handleRemove = async (selectedRows: TableListItem[]) => {
   if (!selectedRows) return true;
   try {
     await removeRule({
-      key: selectedRows.map(row => row.key),
+      key: selectedRows.map(row => row._id),
     });
     hide();
     message.success('删除成功，即将刷新');
@@ -85,30 +88,25 @@ const TableList: React.FC<TableListProps> = () => {
       dataIndex: 'name',
     },
     {
-      title: '描述',
-      dataIndex: 'desc',
+      title: '注册人数',
+      dataIndex: 'registerCounnt',
+      renderText: (val: string) => `${val}人`,
     },
     {
-      title: '服务调用次数',
-      dataIndex: 'callNo',
+      title: '预警阈值',
+      dataIndex: 'earlyWarningThreshold',
       sorter: true,
-      renderText: (val: string) => `${val} 万`,
+      renderText: (val: string) => `${val}人`,
     },
     {
       title: '状态',
-      dataIndex: 'status',
-      valueEnum: {
-        0: { text: '关闭', status: 'Default' },
-        1: { text: '运行中', status: 'Processing' },
-        2: { text: '已上线', status: 'Success' },
-        3: { text: '异常', status: 'Error' },
-      },
+      dataIndex: 'isEnabled',
+      renderText: (val: boolean) => `${val ? '启用' : '关闭'}`,
     },
     {
-      title: '上次调度时间',
-      dataIndex: 'updatedAt',
-      sorter: true,
-      valueType: 'dateTime',
+      title: '通知人数',
+      dataIndex: 'phones',
+      renderText: (val: string[]) => `${val.length}`,
     },
     {
       title: '操作',
@@ -116,16 +114,10 @@ const TableList: React.FC<TableListProps> = () => {
       valueType: 'option',
       render: (_, record) => (
         <>
-          <a
-            onClick={() => {
-              handleUpdateModalVisible(true);
-              setStepFormValues(record);
-            }}
-          >
-            配置
-          </a>
-          <Divider type="vertical" />
-          <a href="">订阅警报</a>
+          <Link to={`/appinfo/${record._id}`}>
+            <Icon type="pie-chart" />
+            <span>编辑</span>
+          </Link>
         </>
       ),
     },
@@ -134,7 +126,7 @@ const TableList: React.FC<TableListProps> = () => {
   return (
     <PageHeaderWrapper>
       <ProTable<TableListItem>
-        headerTitle="查询表格"
+        headerTitle="游戏列表"
         actionRef={actionRef}
         rowKey="key"
         toolBarRender={(action, { selectedRows }) => [

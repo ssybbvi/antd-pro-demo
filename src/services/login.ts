@@ -1,4 +1,5 @@
 import request from '@/utils/request';
+import axios from 'axios';
 
 export interface LoginParamsType {
   userName: string;
@@ -8,10 +9,18 @@ export interface LoginParamsType {
 }
 
 export async function fakeAccountLogin(params: LoginParamsType) {
-  return request('/api/login/account', {
-    method: 'POST',
-    data: params,
-  });
+  return (
+    await axios({
+      method: 'post',
+      url: 'http://localhost:5000/api/v1/users/login',
+      data: params,
+    })
+  ).data;
+
+  // return request('users/login', {
+  //   method: 'POST',
+  //   data: params,
+  // });
 }
 
 export async function getFakeCaptcha(mobile: string) {

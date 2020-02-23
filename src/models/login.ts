@@ -36,29 +36,42 @@ const Model: LoginModelType = {
   effects: {
     *login({ payload }, { call, put }) {
       const response = yield call(fakeAccountLogin, payload);
+      if (!response.accessToken) {
+        yield put({
+          type: 'changeLoginStatus',
+          payload: {
+            status: 'error',
+            type: 'account',
+            currentAuthority: 'guest',
+          },
+        });
+        return;
+      }
       yield put({
         type: 'changeLoginStatus',
-        payload: response,
+        payload: {
+          status: 'ok',
+          type: 'account',
+          currentAuthority: 'admin',
+        },
       });
-      // Login successfully
-      if (response.status === 'ok') {
-        const urlParams = new URL(window.location.href);
-        const params = getPageQuery();
-        let { redirect } = params as { redirect: string };
-        if (redirect) {
-          const redirectUrlParams = new URL(redirect);
-          if (redirectUrlParams.origin === urlParams.origin) {
-            redirect = redirect.substr(urlParams.origin.length);
-            if (redirect.match(/^\/.*#/)) {
-              redirect = redirect.substr(redirect.indexOf('#') + 1);
-            }
-          } else {
-            window.location.href = '/';
-            return;
+
+      const urlParams = new URL(window.location.href);
+      const params = getPageQuery();
+      let { redirect } = params as { redirect: string };
+      if (redirect) {
+        const redirectUrlParams = new URL(redirect);
+        if (redirectUrlParams.origin === urlParams.origin) {
+          redirect = redirect.substr(urlParams.origin.length);
+          if (redirect.match(/^\/.*#/)) {
+            redirect = redirect.substr(redirect.indexOf('#') + 1);
           }
+        } else {
+          window.location.href = '/';
+          return;
         }
-        router.replace(redirect || '/');
       }
+      router.replace(redirect || '/');
     },
 
     *getCaptcha({ payload }, { call }) {
