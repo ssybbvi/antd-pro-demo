@@ -1,15 +1,14 @@
 /* eslint-disable no-underscore-dangle */
 
-import { Button, Divider, Dropdown, Form, Icon, Menu, message } from 'antd';
-import React, { useState, useRef } from 'react';
+import { Button, Form, Icon, Menu, Dropdown, message } from 'antd';
+import React, { useRef } from 'react';
 import { FormComponentProps } from 'antd/es/form';
 import { PageHeaderWrapper } from '@ant-design/pro-layout';
 import ProTable, { ProColumns, ActionType } from '@ant-design/pro-table';
 import { Link } from 'umi';
-import CreateForm from './components/CreateForm';
-import UpdateForm, { FormValueType } from './components/UpdateForm';
-import { TableListItem } from './data.d';
-import { queryRule, updateRule, addRule, removeRule } from './service';
+import { PlusOutlined, DownOutlined } from '@ant-design/icons';
+import { queryRule, addRule, updateRule } from './service';
+import { TableListItem } from '../ListPermission/data';
 
 interface TableListProps extends FormComponentProps {}
 
@@ -33,54 +32,7 @@ const handleAdd = async (fields: FormValueType) => {
   }
 };
 
-/**
- * 更新节点
- * @param fields
- */
-const handleUpdate = async (fields: FormValueType) => {
-  const hide = message.loading('正在配置');
-  try {
-    await updateRule({
-      name: fields.name,
-      desc: fields.desc,
-      key: fields.key,
-    });
-    hide();
-
-    message.success('配置成功');
-    return true;
-  } catch (error) {
-    hide();
-    message.error('配置失败请重试！');
-    return false;
-  }
-};
-
-/**
- *  删除节点
- * @param selectedRows
- */
-const handleRemove = async (selectedRows: TableListItem[]) => {
-  const hide = message.loading('正在删除');
-  if (!selectedRows) return true;
-  try {
-    await removeRule({
-      key: selectedRows.map(row => row._id),
-    });
-    hide();
-    message.success('删除成功，即将刷新');
-    return true;
-  } catch (error) {
-    hide();
-    message.error('删除失败，请重试');
-    return false;
-  }
-};
-
 const TableList: React.FC<TableListProps> = () => {
-  const [createModalVisible, handleModalVisible] = useState<boolean>(false);
-  const [updateModalVisible, handleUpdateModalVisible] = useState<boolean>(false);
-  const [stepFormValues, setStepFormValues] = useState({});
   const actionRef = useRef<ActionType>();
   const columns: ProColumns<TableListItem>[] = [
     {
@@ -99,14 +51,9 @@ const TableList: React.FC<TableListProps> = () => {
       renderText: (val: string) => `${val}人`,
     },
     {
-      title: '状态',
+      title: '预警通知状态',
       dataIndex: 'isEnabled',
       renderText: (val: boolean) => `${val ? '启用' : '关闭'}`,
-    },
-    {
-      title: '通知人数',
-      dataIndex: 'phones',
-      renderText: (val: string[]) => `${val.length}`,
     },
     {
       title: '操作',
@@ -114,7 +61,7 @@ const TableList: React.FC<TableListProps> = () => {
       valueType: 'option',
       render: (_, record) => (
         <>
-          <Link to={`/appinfo/${record._id}`}>
+          <Link to={`/appinfolist/appinfo/${record._id}`}>
             <Icon type="pie-chart" />
             <span>编辑</span>
           </Link>
@@ -130,7 +77,7 @@ const TableList: React.FC<TableListProps> = () => {
         actionRef={actionRef}
         rowKey="key"
         toolBarRender={(action, { selectedRows }) => [
-          <Button icon="plus" type="primary" onClick={() => handleModalVisible(true)}>
+          <Button icon={<PlusOutlined />} type="primary" onClick={() => handleModalVisible(true)}>
             新建
           </Button>,
           selectedRows && selectedRows.length > 0 && (
@@ -151,56 +98,15 @@ const TableList: React.FC<TableListProps> = () => {
               }
             >
               <Button>
-                批量操作 <Icon type="down" />
+                批量操作 <DownOutlined />
               </Button>
             </Dropdown>
           ),
         ]}
-        tableAlertRender={(selectedRowKeys, selectedRows) => (
-          <div>
-            已选择 <a style={{ fontWeight: 600 }}>{selectedRowKeys.length}</a> 项&nbsp;&nbsp;
-            <span>
-              服务调用次数总计 {selectedRows.reduce((pre, item) => pre + item.callNo, 0)} 万
-            </span>
-          </div>
-        )}
         request={params => queryRule(params)}
         columns={columns}
         rowSelection={{}}
       />
-      <CreateForm
-        onSubmit={async value => {
-          const success = await handleAdd(value);
-          if (success) {
-            handleModalVisible(false);
-            if (actionRef.current) {
-              actionRef.current.reload();
-            }
-          }
-        }}
-        onCancel={() => handleModalVisible(false)}
-        modalVisible={createModalVisible}
-      />
-      {stepFormValues && Object.keys(stepFormValues).length ? (
-        <UpdateForm
-          onSubmit={async value => {
-            const success = await handleUpdate(value);
-            if (success) {
-              handleModalVisible(false);
-              setStepFormValues({});
-              if (actionRef.current) {
-                actionRef.current.reload();
-              }
-            }
-          }}
-          onCancel={() => {
-            handleUpdateModalVisible(false);
-            setStepFormValues({});
-          }}
-          updateModalVisible={updateModalVisible}
-          values={stepFormValues}
-        />
-      ) : null}
     </PageHeaderWrapper>
   );
 };

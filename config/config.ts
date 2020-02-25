@@ -83,6 +83,12 @@ export default {
           path: '/user/login',
           component: './user/login',
         },
+        {
+          name: '查询表格',
+          icon: 'smile',
+          path: '/userlist',
+          component: './UserList',
+        },
       ],
     },
     {
@@ -96,32 +102,37 @@ export default {
           routes: [
             {
               path: '/',
-              redirect: '/welcome',
-            },
-            {
-              path: '/welcome',
-              name: 'welcome',
-              icon: 'smile',
-              component: './Welcome',
-            },
-            {
-              path: '/admin',
-              name: 'admin',
-              icon: 'crown',
-              component: './Admin',
-              authority: ['admin'],
+              redirect: '/appinfolist',
             },
             {
               name: '游戏列表',
               icon: 'smile',
               path: '/appinfolist',
               component: './AppInfoList',
+              routes: [
+                {
+                  path: '/xxx/appinfo/:_id',
+                  component: './AppInfo',
+                },
+              ],
             },
             {
-              name: '个人设置',
+              name: '权限管理',
               icon: 'smile',
-              path: '/appinfo/:_id',
-              component: './AppInfo',
+              path: '/listpermission',
+              component: './ListPermission',
+            },
+            {
+              name: '角色管理',
+              icon: 'smile',
+              path: '/listrole',
+              component: './RoleList',
+            },
+            {
+              name: '用户管理',
+              icon: 'smile',
+              path: '/userlist',
+              component: './UserList',
             },
             {
               component: './404',
