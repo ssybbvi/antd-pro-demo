@@ -109,12 +109,11 @@ export default {
               icon: 'smile',
               path: '/appinfolist',
               component: './AppInfoList',
-              routes: [
-                {
-                  path: '/xxx/appinfo/:_id',
-                  component: './AppInfo',
-                },
-              ],
+            },
+
+            {
+              path: '/appinfo/:_id',
+              component: './AppInfo',
             },
             {
               name: '权限管理',
@@ -202,4 +201,6 @@ export default {
   //     pathRewrite: { '^/server': '' },
   //   },
   // },
+  publicPath: '/xald-management/',
+  base: '/xald-management/',
 } as IConfig;

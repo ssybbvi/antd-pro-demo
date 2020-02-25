@@ -61,7 +61,7 @@ const TableList: React.FC<TableListProps> = () => {
       valueType: 'option',
       render: (_, record) => (
         <>
-          <Link to={`/appinfolist/appinfo/${record._id}`}>
+          <Link to={`/appinfo/${record._id}`}>
             <Icon type="pie-chart" />
             <span>编辑</span>
           </Link>

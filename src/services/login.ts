@@ -12,7 +12,7 @@ export async function fakeAccountLogin(params: LoginParamsType) {
   return (
     await axios({
       method: 'post',
-      url: 'http://localhost:5000/api/v1/users/login',
+      url: 'http://test-xald-management.ixald.com/api/v1/users/login',
       data: params,
     })
   ).data;
