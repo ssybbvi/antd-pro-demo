@@ -4,7 +4,7 @@ import { stringify } from 'querystring';
 import router from 'umi/router';
 
 import { fakeAccountLogin, getFakeCaptcha } from '@/services/login';
-import { setAuthority } from '@/utils/authority';
+import { setAuthority, saveTokenToClient } from '@/utils/authority';
 import { getPageQuery } from '@/utils/utils';
 
 export interface StateType {
@@ -53,6 +53,7 @@ const Model: LoginModelType = {
           status: 'ok',
           type: 'account',
           currentAuthority: 'admin',
+          token: response.accessToken,
         },
       });
 
@@ -95,6 +96,7 @@ const Model: LoginModelType = {
   reducers: {
     changeLoginStatus(state, { payload }) {
       setAuthority(payload.currentAuthority);
+      saveTokenToClient(payload.token);
       return {
         ...state,
         status: payload.status,

@@ -8,10 +8,10 @@ import { FormComponentProps } from 'antd/es/form';
 import Link from 'umi/link';
 import { connect } from 'dva';
 import { StateType } from '@/models/login';
-import LoginComponents from './components/Login';
-import styles from './style.less';
 import { LoginParamsType } from '@/services/login';
 import { ConnectState } from '@/models/connect';
+import LoginComponents from './components/Login';
+import styles from './style.less';
 
 const { Tab, UserName, Password, Mobile, Captcha, Submit } = LoginComponents;
 
@@ -111,7 +111,7 @@ class Login extends Component<LoginProps, LoginState> {
               )}
             <UserName
               name="userName"
-              placeholder={`${formatMessage({ id: 'user-login.login.userName' })}: admin or user`}
+              placeholder={`${formatMessage({ id: 'user-login.login.userName' })} `}
               rules={[
                 {
                   required: true,
@@ -121,7 +121,7 @@ class Login extends Component<LoginProps, LoginState> {
             />
             <Password
               name="password"
-              placeholder={`${formatMessage({ id: 'user-login.login.password' })}: ant.design`}
+              placeholder={`${formatMessage({ id: 'user-login.login.password' })} `}
               rules={[
                 {
                   required: true,
@@ -136,7 +136,7 @@ class Login extends Component<LoginProps, LoginState> {
               }}
             />
           </Tab>
-          <Tab key="mobile" tab={formatMessage({ id: 'user-login.login.tab-login-mobile' })}>
+          {/* <Tab key="mobile" tab={formatMessage({ id: 'user-login.login.tab-login-mobile' })}>
             {status === 'error' &&
               loginType === 'mobile' &&
               !submitting &&
@@ -171,19 +171,19 @@ class Login extends Component<LoginProps, LoginState> {
                 },
               ]}
             />
-          </Tab>
+          </Tab> */}
           <div>
-            <Checkbox checked={autoLogin} onChange={this.changeAutoLogin}>
+            {/* <Checkbox checked={autoLogin} onChange={this.changeAutoLogin}>
               <FormattedMessage id="user-login.login.remember-me" />
-            </Checkbox>
+            </Checkbox> */}
             <a style={{ float: 'right' }} href="">
-              <FormattedMessage id="user-login.login.forgot-password" />
+              {/* <FormattedMessage id="user-login.login.forgot-password" /> */}
             </a>
           </div>
           <Submit loading={submitting}>
             <FormattedMessage id="user-login.login.login" />
           </Submit>
-          <div className={styles.other}>
+          {/* <div className={styles.other}>
             <FormattedMessage id="user-login.login.sign-in-with" />
             <Icon type="alipay-circle" className={styles.icon} theme="outlined" />
             <Icon type="taobao-circle" className={styles.icon} theme="outlined" />
@@ -191,7 +191,7 @@ class Login extends Component<LoginProps, LoginState> {
             <Link className={styles.register} to="/user/register">
               <FormattedMessage id="user-login.login.signup" />
             </Link>
-          </div>
+          </div> */}
         </LoginComponents>
       </div>
     );

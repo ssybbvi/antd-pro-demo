@@ -30,3 +30,11 @@ export function setAuthority(authority: string | string[]): void {
   // auto reload
   reloadAuthorized();
 }
+
+export function saveTokenToClient(token: string): void {
+  localStorage.setItem('xald-login-token', token);
+}
+
+export function getTokenForClent(): string {
+  return `${localStorage.getItem('xald-login-token')}`;
+}
