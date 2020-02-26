@@ -59,3 +59,13 @@ export async function assignRole(params: any) {
 
   return {};
 }
+
+export async function updatePassword(params: any) {
+  await axios({
+    method: 'put',
+    url: 'http://test-xald-management.ixald.com/api/v1/users/updatepassword',
+    data: params,
+  });
+
+  return {};
+}

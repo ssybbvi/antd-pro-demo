@@ -1,5 +1,7 @@
 import { reloadAuthorized } from './Authorized';
 
+const loginToken = 'xald-login-token';
+
 // use localStorage to store the authority info, which might be sent from server in actual project.
 export function getAuthority(str?: string): string | string[] {
   const authorityString =
@@ -32,9 +34,13 @@ export function setAuthority(authority: string | string[]): void {
 }
 
 export function saveTokenToClient(token: string): void {
-  localStorage.setItem('xald-login-token', token);
+  localStorage.setItem(loginToken, token);
 }
 
 export function getTokenForClent(): string {
-  return `${localStorage.getItem('xald-login-token')}`;
+  return `${localStorage.getItem(loginToken)}`;
+}
+
+export function deleteTokenForClent() {
+  return localStorage.removeItem(loginToken);
 }

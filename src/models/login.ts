@@ -4,7 +4,7 @@ import { stringify } from 'querystring';
 import router from 'umi/router';
 
 import { fakeAccountLogin, getFakeCaptcha } from '@/services/login';
-import { setAuthority, saveTokenToClient } from '@/utils/authority';
+import { setAuthority, saveTokenToClient, deleteTokenForClent } from '@/utils/authority';
 import { getPageQuery } from '@/utils/utils';
 
 export interface StateType {
@@ -83,6 +83,7 @@ const Model: LoginModelType = {
       const { redirect } = getPageQuery();
       // Note: There may be security issues, please note
       if (window.location.pathname !== '/user/login' && !redirect) {
+        deleteTokenForClent();
         router.replace({
           pathname: '/user/login',
           search: stringify({

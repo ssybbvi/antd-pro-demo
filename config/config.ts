@@ -98,7 +98,6 @@ export default {
         {
           path: '/',
           component: '../layouts/BasicLayout',
-          authority: ['admin', 'user'],
           routes: [
             {
               path: '/',
@@ -201,6 +200,4 @@ export default {
   //     pathRewrite: { '^/server': '' },
   //   },
   // },
-  publicPath: '/xald-management/',
-  base: '/xald-management/',
 } as IConfig;

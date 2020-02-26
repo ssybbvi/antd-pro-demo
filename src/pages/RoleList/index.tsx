@@ -80,9 +80,12 @@ const TableList: React.FC<TableListProps> = () => {
   const [stepFormValues, setStepFormValues] = useState({});
   const [permissionList, setPermissionValues] = useState([]);
 
-  useEffect(async () => {
-    const result = await getPermissionList();
-    setPermissionValues(result.data.permissions);
+  useEffect(() => {
+    async function fetchData() {
+      const result = await getPermissionList();
+      setPermissionValues(result.data.permissions);
+    }
+    fetchData();
   }, []);
 
   const actionRef = useRef<ActionType>();

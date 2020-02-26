@@ -13,12 +13,17 @@ export interface UpdateFormProps extends FormComponentProps {
   onCancel: (flag?: boolean, formVals?: FormValueType) => void;
   onSubmit: (values: FormValueType) => void;
   updateModalVisible: boolean;
-  values: Partial<TableListItem>;
+  values: {
+    _id: string;
+  };
 }
 const FormItem = Form.Item;
 
 export interface UpdateFormState {
-  formVals: FormValueType;
+  formVals: {
+    _id: string;
+    newPassword: string;
+  };
 }
 
 class UpdateForm extends Component<UpdateFormProps, UpdateFormState> {
@@ -39,8 +44,7 @@ class UpdateForm extends Component<UpdateFormProps, UpdateFormState> {
     this.state = {
       formVals: {
         _id: props.values._id,
-        name: props.values.name,
-        discriminator: props.values.discriminator,
+        newPassword: '',
       },
     };
   }

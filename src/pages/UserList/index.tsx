@@ -98,9 +98,12 @@ const TableList: React.FC<TableListProps> = () => {
   const [stepFormValues, setStepFormValues] = useState({});
   const [roleList, setRoleValues] = useState([]);
 
-  useEffect(async () => {
-    const result = await getRoleList();
-    setRoleValues(result.data.roles);
+  useEffect(() => {
+    async function fetchData() {
+      const result = await getRoleList();
+      setRoleValues(result.data.roles);
+    }
+    fetchData();
   }, []);
 
   const actionRef = useRef<ActionType>();
