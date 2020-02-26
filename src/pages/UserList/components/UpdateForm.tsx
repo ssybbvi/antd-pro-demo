@@ -1,3 +1,5 @@
+/* eslint-disable react/no-access-state-in-setstate */
+/* eslint-disable react/jsx-boolean-value */
 /* eslint-disable no-underscore-dangle */
 import { Form } from '@ant-design/compatible';
 import '@ant-design/compatible/assets/index.css';
@@ -7,23 +9,23 @@ import React, { Component } from 'react';
 import { FormComponentProps } from '@ant-design/compatible/es/form';
 import { TableListItem } from '../data.d';
 
-export interface FormValueType extends Partial<TableListItem> {}
+export interface IUpdatePassword {
+  _id: string;
+  newPassword: string;
+}
+
+// export interface FormValueType extends Partial<TableListItem> {}
 
 export interface UpdateFormProps extends FormComponentProps {
-  onCancel: (flag?: boolean, formVals?: FormValueType) => void;
-  onSubmit: (values: FormValueType) => void;
+  onCancel: (flag?: boolean, formVals?: IUpdatePassword) => void;
+  onSubmit: (values: IUpdatePassword) => void;
   updateModalVisible: boolean;
-  values: {
-    _id: string;
-  };
+  values: Partial<TableListItem>;
 }
 const FormItem = Form.Item;
 
 export interface UpdateFormState {
-  formVals: {
-    _id: string;
-    newPassword: string;
-  };
+  formVals: IUpdatePassword;
 }
 
 class UpdateForm extends Component<UpdateFormProps, UpdateFormState> {
@@ -31,6 +33,7 @@ class UpdateForm extends Component<UpdateFormProps, UpdateFormState> {
     handleUpdate: () => {},
     handleUpdateModalVisible: () => {},
     values: {},
+    permissionList: [],
   };
 
   formLayout = {
@@ -43,7 +46,7 @@ class UpdateForm extends Component<UpdateFormProps, UpdateFormState> {
 
     this.state = {
       formVals: {
-        _id: props.values._id,
+        _id: props.values._id!,
         newPassword: '',
       },
     };
@@ -60,20 +63,23 @@ class UpdateForm extends Component<UpdateFormProps, UpdateFormState> {
           formVals,
         },
         () => {
-          handleUpdate(formVals);
+          handleUpdate({
+            ...fieldsValue,
+            _id: oldValue._id,
+          });
         },
       );
     });
   };
 
-  renderContent = (formVals: FormValueType) => {
+  renderContent = (formVals: IUpdatePassword) => {
     const { form } = this.props;
     return [
-      <FormItem key="name" {...this.formLayout} label="密码">
-        {form.getFieldDecorator('password', {
-          rules: [{ required: true, message: '请输入密码！' }],
-          initialValue: formVals.username,
-        })(<Input placeholder="请输入" />)}
+      <FormItem key="newPassword" {...this.formLayout} label="密码">
+        {form.getFieldDecorator('newPassword', {
+          rules: [{ required: true, message: '请输入密码！至少6个字符', min: 6 }],
+          initialValue: '',
+        })(<Input placeholder="请输入密码！" />)}
       </FormItem>,
     ];
   };
@@ -99,7 +105,7 @@ class UpdateForm extends Component<UpdateFormProps, UpdateFormState> {
         width={640}
         bodyStyle={{ padding: '32px 40px 48px' }}
         destroyOnClose
-        title="权限配置"
+        title="角色配置"
         visible={updateModalVisible}
         footer={this.renderFooter()}
         onCancel={() => handleUpdateModalVisible(false, values)}

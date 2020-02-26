@@ -1,12 +1,12 @@
 import request from '@/utils/request';
-import axios from 'axios';
+import axios from '@/utils/axiosRequest';
 import { TableListParams } from './data.d';
 
 export async function queryRule(params?: TableListParams) {
   const result = (
     await axios({
       method: 'get',
-      url: 'http://test-xald-management.ixald.com/api/v1/appInfo/',
+      url: 'appInfo/',
       data: params,
     })
   ).data;

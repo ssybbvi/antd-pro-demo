@@ -9,7 +9,15 @@ import ProTable, { ProColumns, ActionType } from '@ant-design/pro-table';
 import CreateForm from './components/CreateForm';
 import UpdateForm, { FormValueType } from './components/UpdateForm';
 import { TableListItem } from './data.d';
-import { queryRule, updateRule, addRule, removeRule, getRoleList, assignRole } from './service';
+import {
+  queryRule,
+  updateRule,
+  addRule,
+  removeRule,
+  getRoleList,
+  assignRole,
+  updatePassword,
+} from './service';
 import AssignRoleForm from './components/AssignRoleForm';
 
 interface TableListProps extends FormComponentProps {}
@@ -43,7 +51,7 @@ const handleAdd = async (fields: FormValueType) => {
 const handleUpdate = async (fields: FormValueType) => {
   const hide = message.loading('正在配置');
   try {
-    await updateRule({ ...fields });
+    await updatePassword({ ...fields });
     hide();
 
     message.success('配置成功');

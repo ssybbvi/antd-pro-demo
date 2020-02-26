@@ -1,12 +1,12 @@
 import request from '@/utils/request';
-import axios from 'axios';
+import axios from '@/utils/axiosRequest';
 import { TableListParams, TableListItem } from './data.d';
 
 export async function queryRule(params?: TableListParams) {
   const result = (
     await axios({
       method: 'get',
-      url: 'http://test-xald-management.ixald.com/api/v1/users/',
+      url: 'users/',
       data: params,
     })
   ).data;
@@ -26,7 +26,7 @@ export async function removeRule(params: { key: number[] }) {
 export async function addRule(params: TableListItem) {
   await axios({
     method: 'post',
-    url: 'http://test-xald-management.ixald.com/api/v1/users/',
+    url: 'users/',
     data: params,
   });
   return {};
@@ -35,7 +35,7 @@ export async function addRule(params: TableListItem) {
 export async function updateRule(params: TableListParams) {
   await axios({
     method: 'put',
-    url: 'http://test-xald-management.ixald.com/api/v1/users/',
+    url: 'users/',
     data: params,
   });
 
@@ -45,7 +45,7 @@ export async function updateRule(params: TableListParams) {
 export async function getRoleList() {
   return axios({
     method: 'get',
-    url: 'http://test-xald-management.ixald.com/api/v1/role/',
+    url: 'role/',
     data: {},
   });
 }
@@ -53,7 +53,7 @@ export async function getRoleList() {
 export async function assignRole(params: any) {
   await axios({
     method: 'put',
-    url: 'http://test-xald-management.ixald.com/api/v1/users/assignrole',
+    url: 'users/assignrole',
     data: params,
   });
 
@@ -63,7 +63,7 @@ export async function assignRole(params: any) {
 export async function updatePassword(params: any) {
   await axios({
     method: 'put',
-    url: 'http://test-xald-management.ixald.com/api/v1/users/updatepassword',
+    url: 'users/updatepassword',
     data: params,
   });
 

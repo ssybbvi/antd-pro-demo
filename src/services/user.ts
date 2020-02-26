@@ -1,5 +1,5 @@
 import request from '@/utils/request';
-import axios from 'axios';
+import axios from '@/utils/axiosRequest';
 import { getTokenForClent } from '@/utils/authority';
 
 export async function query(): Promise<any> {
@@ -10,7 +10,7 @@ export async function queryCurrent(): Promise<any> {
   const token = getTokenForClent();
   const result = await axios({
     method: 'get',
-    url: 'http://test-xald-management.ixald.com/api/v1/users/me',
+    url: 'users/me', // 'url: '/api/v1/users/me',
     data: {},
     headers: {
       authorization: token,

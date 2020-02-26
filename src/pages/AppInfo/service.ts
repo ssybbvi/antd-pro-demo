@@ -1,10 +1,10 @@
 import request from '@/utils/request';
-import axios from 'axios';
+import axios from '@/utils/axiosRequest';
 
 export async function query(params: any) {
   return axios({
     method: 'get',
-    url: `http://test-xald-management.ixald.com/api/v1/appInfo/${params}`,
+    url: 'appInfo/${params}',
   });
 
   // return request('/api/users');
@@ -13,7 +13,7 @@ export async function query(params: any) {
 export async function edit(params: any) {
   return axios({
     method: 'put',
-    url: `http://test-xald-management.ixald.com/api/v1/appInfo/`,
+    url: 'appInfo/',
     data: params,
   });
 }

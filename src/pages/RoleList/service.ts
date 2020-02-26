@@ -1,12 +1,12 @@
 import request from '@/utils/request';
-import axios from 'axios';
+import axios from '@/utils/axiosRequest';
 import { TableListParams } from './data.d';
 
 export async function queryRule(params?: TableListParams) {
   const result = (
     await axios({
       method: 'get',
-      url: 'http://test-xald-management.ixald.com/api/v1/role/',
+      url: 'role/',
       data: params,
     })
   ).data;
@@ -26,7 +26,7 @@ export async function removeRule(params: { key: number[] }) {
 export async function addRule(params: TableListParams) {
   await axios({
     method: 'post',
-    url: 'http://test-xald-management.ixald.com/api/v1/role/',
+    url: 'role/',
     data: params,
   });
   return {};
@@ -35,7 +35,7 @@ export async function addRule(params: TableListParams) {
 export async function updateRule(params: TableListParams) {
   await axios({
     method: 'put',
-    url: 'http://test-xald-management.ixald.com/api/v1/role/',
+    url: 'role/',
     data: params,
   });
 
@@ -45,7 +45,7 @@ export async function updateRule(params: TableListParams) {
 export async function getPermissionList() {
   return axios({
     method: 'get',
-    url: 'http://test-xald-management.ixald.com/api/v1/permission/',
+    url: 'permission/',
     data: {},
   });
 }

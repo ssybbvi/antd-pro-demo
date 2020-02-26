@@ -1,5 +1,5 @@
 import request from '@/utils/request';
-import axios from 'axios';
+import axios from '@/utils/axiosRequest';
 
 export interface LoginParamsType {
   userName: string;
@@ -12,7 +12,7 @@ export async function fakeAccountLogin(params: LoginParamsType) {
   return (
     await axios({
       method: 'post',
-      url: 'http://test-xald-management.ixald.com/api/v1/users/login',
+      url: 'users/login',
       data: params,
     })
   ).data;
