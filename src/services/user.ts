@@ -7,17 +7,37 @@ export async function query(): Promise<any> {
 }
 
 export async function queryCurrent(): Promise<any> {
-  const token = getTokenForClent();
-  const result = await axios({
-    method: 'get',
-    url: 'users/me', // 'url: '/api/v1/users/me',
-    data: {},
-    headers: {
-      authorization: token,
-    },
+  return new Promise((res, rej) => {
+    res({
+      avatar: 'test-avatar',
+      email: 'xxxxx',
+      name: 'xxxx',
+      title: 'test-title',
+      group: 'test-group',
+      signature: 'test-signature',
+      tags: [
+        {
+          key: 'test-key',
+          label: 'test-label',
+        },
+      ],
+      userid: '11',
+      unreadCount: 123,
+      notifyCount: 123,
+    });
   });
 
-  return (result.data && result.data.user) || {};
+  // const token = getTokenForClent();
+  // const result = await axios({
+  //   method: 'get',
+  //   url: 'users/admin/me', // 'url: '/api/v1/users/me',
+  //   data: {},
+  //   headers: {
+  //     authorization: token,
+  //   },
+  // });
+
+  // return (result.data && result.data.user) || {};
 
   // return request('/api/currentUser');
 

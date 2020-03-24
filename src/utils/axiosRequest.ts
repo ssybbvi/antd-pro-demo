@@ -5,7 +5,7 @@ import { getTokenForClent } from './authority';
 
 // axios 配置
 axios.defaults.timeout = 5000; // 设置超时时间
-axios.defaults.baseURL = 'http://test-xald-management.ixald.com/api/v1/'; // 这是调用数据接口
+axios.defaults.baseURL = 'http://127.0.0.1:5000/api/v1/'; // 这是调用数据接口
 // 'http://127.0.0.1:5000/api/v1/';
 // http request 拦截器（所有发送的请求都要从这儿过一次），通过这个，我们就可以把token传到后台，我这里是使用sessionStorage来存储token等权限信息和用户信息，若要使用cookie可以自己封装一个函数并import便可使用
 axios.interceptors.request.use(
