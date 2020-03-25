@@ -6,8 +6,9 @@ import React, { Component } from 'react';
 import { FormComponentProps } from '@ant-design/compatible/es/form';
 import { CommodityTableListItem } from '../data.d';
 import { PicturesWall } from './PicturesWall';
+import EditableTagGroup from './EditableTagGroup';
 
-export interface FormValueType extends Partial<CommodityTableListItem> {}
+ 
 
 export interface UpdateFormProps extends FormComponentProps {
   onCancel: (flag?: boolean, formVals?: CommodityTableListItem) => void;
@@ -48,6 +49,7 @@ class UpdateForm extends Component<UpdateFormProps, UpdateFormState> {
         sales: props.values.sales,
         restrictedPurchaseQuantity: props.values.restrictedPurchaseQuantity,
         tags: props.values.tags,
+        imgesDescrptionList:props.values.imgesDescrptionList,
       },
     };
   }
@@ -69,7 +71,7 @@ class UpdateForm extends Component<UpdateFormProps, UpdateFormState> {
     });
   };
 
-  renderContent = (formVals: FormValueType) => {
+  renderContent = (formVals: CommodityTableListItem) => {
     const { form } = this.props;
     return [
       <FormItem key="name" {...this.formLayout} label="商品名称">
@@ -78,13 +80,19 @@ class UpdateForm extends Component<UpdateFormProps, UpdateFormState> {
           initialValue: formVals.name,
         })(<Input placeholder="请输入" />)}
       </FormItem>,
-      <FormItem key="price" {...this.formLayout} label="商品价格">
+      <FormItem key="images" {...this.formLayout} label="图片">
+      {form.getFieldDecorator('images', {
+        rules: [],
+        initialValue: formVals.images,
+      })(<PicturesWall images={formVals.images!} listType={"picture-card"}></PicturesWall>)}
+    </FormItem>,
+      <FormItem key="price" {...this.formLayout} label="积分">
         {form.getFieldDecorator('price', {
           rules: [],
           initialValue: formVals.price,
         })(<InputNumber min={1} />)}
       </FormItem>,
-      <FormItem key="fakePrice" {...this.formLayout} label="虚假价格">
+      <FormItem key="fakePrice" {...this.formLayout} label="市场价格">
         {form.getFieldDecorator('fakePrice', {
           rules: [{ required: true, message: '请输入至少一个字符的商品描述！', min: 1 }],
           initialValue: formVals.fakePrice,
@@ -98,22 +106,24 @@ class UpdateForm extends Component<UpdateFormProps, UpdateFormState> {
       </FormItem>,
       <FormItem key="descrption" {...this.formLayout} label="商品描述">
         {form.getFieldDecorator('descrption', {
-          rules: [{ required: true, message: '请输入至少五个字符的商品描述！', min: 5 }],
-          initialValue: formVals.descrption,
-        })(<TextArea rows={4} placeholder="请输入至少五个字符" />)}
-      </FormItem>,
-      <FormItem key="xx" {...this.formLayout} label="图片">
-        {form.getFieldDecorator('images', {
           rules: [],
           initialValue: formVals.descrption,
-        })(<PicturesWall images={formVals.images!}></PicturesWall>)}
+        })(<TextArea rows={4}   />)}
       </FormItem>,
+
+      <FormItem key="imgesDescrptionList" {...this.formLayout} label="商品图片描述">
+         {form.getFieldDecorator('imgesDescrptionList', {
+           rules: [], 
+           initialValue: formVals.imgesDescrptionList,
+         })(<PicturesWall images={formVals.imgesDescrptionList!} listType={"picture"}></PicturesWall>)}
+      </FormItem>,
+      
       <FormItem key="tags" {...this.formLayout} label="标签">
-        {form.getFieldDecorator('tags', {
-          rules: [{ required: true, message: '请输入至少五个字符的商品描述！', min: 5 }],
-          initialValue: formVals.tags,
-        })(<TextArea rows={4} placeholder="请输入至少五个字符" />)}
-      </FormItem>,
+      {form.getFieldDecorator('tags', {
+        rules: [],
+        initialValue: formVals.tags,
+      })(<EditableTagGroup value={formVals.tags} ></EditableTagGroup>)}
+    </FormItem>,
     ];
   };
 

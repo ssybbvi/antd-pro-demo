@@ -1,7 +1,7 @@
 import { Upload, Modal } from 'antd';
 import { PlusOutlined } from '@ant-design/icons';
 import React, { Component, useState } from 'react';
-import { UploadFile } from 'antd/lib/upload/interface';
+import { UploadFile, UploadListType } from 'antd/lib/upload/interface';
 
 function getBase64(file: any) {
   return new Promise((resolve, reject) => {
@@ -13,6 +13,7 @@ function getBase64(file: any) {
 }
 
 export interface PicturesWallProps {
+  listType:UploadListType
   images: string[];
   onChange?: (iamges: string[]) => void;
 }
@@ -20,7 +21,7 @@ export interface PicturesWallProps {
 export interface PicturesWallState {
   previewVisible: boolean;
   previewImage: string;
-  fileList: Partial<UploadFile>[];
+  fileList:  UploadFile<any>[];
 }
 
 export class PicturesWall extends Component<PicturesWallProps, PicturesWallState> {
@@ -33,8 +34,8 @@ export class PicturesWall extends Component<PicturesWallProps, PicturesWallState
         name: item,
         status: 'done',
         url: item,
-      };
-    }) as any;
+      } as  UploadFile<any>
+    })  
 
     this.state = {
       previewVisible: false,
@@ -64,11 +65,15 @@ export class PicturesWall extends Component<PicturesWallProps, PicturesWallState
       const { onChange } = this.props;
       console.log(JSON.parse(JSON.stringify(_fileList)));
       const imges = _fileList.map((item: any) => item.url || item.response.url);
-      onChange(imges);
+      if(onChange){
+        onChange(imges);
+      }
+      
     }
   };
-
+//"picture-card"
   render() {
+    const {listType} =this.props
     const { previewVisible, previewImage, fileList } = this.state;
     const uploadButton = (
       <div>
@@ -79,13 +84,14 @@ export class PicturesWall extends Component<PicturesWallProps, PicturesWallState
     return (
       <div className="clearfix">
         <Upload
-          action="https://www.mocky.io/v2/5cc8019d300000980a055e76"
-          listType="picture-card"
+          multiple={true}
+          action="http://127.0.0.1:5000/api/v1/upload"
+          listType={listType}
           fileList={fileList}
           onPreview={this.handlePreview}
           onChange={this.handleChange}
         >
-          {fileList.length >= 8 ? null : uploadButton}
+          {fileList.length >= 30 ? null : uploadButton}
         </Upload>
         <Modal visible={previewVisible} footer={null} onCancel={this.handleCancel}>
           <img alt="example" style={{ width: '100%' }} src={previewImage} />

@@ -1,6 +1,7 @@
 import request from '@/utils/request';
 import axios from '@/utils/axiosRequest';
 import { CommodityTableListParams, CommodityTableListItem } from './data.d';
+import { FormValueType } from '../ListPermission/components/UpdateForm';
 
 export async function queryRule(params?: CommodityTableListParams) {
   const result = (
@@ -28,14 +29,24 @@ export async function removeRule(params: { key: number[] }) {
   });
 }
 
-export async function addRule(params: CommodityTableListParams) {
-  return request('/api/rule', {
-    method: 'POST',
-    data: {
-      ...params,
-      method: 'post',
-    },
-  });
+export async function addRule(params: FormValueType) {
+  // return request('/api/rule', {
+  //   method: 'POST',
+  //   data: {
+  //     ...params,
+  //     method: 'post',
+  //   },
+  // });
+
+  await axios({
+    method: 'post',
+    url: 'commodity',
+    data: params,
+  })
+
+  return {
+    success: true,
+  };
 }
 
 export async function updateRule(params: CommodityTableListItem) {

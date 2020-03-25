@@ -8,6 +8,7 @@ export interface CommodityTableListItem {
   sales: number;
   restrictedPurchaseQuantity: number;
   tags: string[];
+  imgesDescrptionList:string[]
 }
 
 export interface CommodityTableListPagination {

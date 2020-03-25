@@ -6,8 +6,8 @@ import React, { useState, useRef } from 'react';
 import { FormComponentProps } from '@ant-design/compatible/es/form';
 import { PageHeaderWrapper } from '@ant-design/pro-layout';
 import ProTable, { ProColumns, ActionType } from '@ant-design/pro-table';
-import CreateForm from './components/CreateForm';
-import UpdateForm, { FormValueType } from './components/UpdateForm';
+import CreateForm , { FormValueType }from './components/CreateForm';
+import UpdateForm from './components/UpdateForm';
 import { CommodityTableListItem } from './data.d';
 import { queryRule, updateRule, addRule, removeRule } from './service';
 
@@ -20,7 +20,7 @@ interface TableListProps extends FormComponentProps {}
 const handleAdd = async (fields: FormValueType) => {
   const hide = message.loading('正在添加');
   try {
-    await addRule({});
+    await addRule(fields);
     hide();
     message.success('添加成功');
     return true;
@@ -144,10 +144,7 @@ const TableList: React.FC<TableListProps> = () => {
         ]}
         tableAlertRender={(selectedRowKeys, selectedRows) => (
           <div>
-            已选择 <a style={{ fontWeight: 600 }}>{selectedRowKeys.length}</a> 项&nbsp;&nbsp;
-            <span>
-              服务调用次数总计 {selectedRows.reduce((pre, item) => pre + item.callNo, 0)} 万
-            </span>
+        
           </div>
         )}
         request={params => queryRule(params)}
@@ -155,7 +152,7 @@ const TableList: React.FC<TableListProps> = () => {
         rowSelection={{}}
       />
       <CreateForm
-        onSubmit={async value => {
+        onSubmit={async(value :any) => {
           const success = await handleAdd(value);
           if (success) {
             handleModalVisible(false);
@@ -165,14 +162,14 @@ const TableList: React.FC<TableListProps> = () => {
           }
         }}
         onCancel={() => handleModalVisible(false)}
-        modalVisible={createModalVisible}
+        createModalVisible={createModalVisible}
       />
       {stepFormValues && Object.keys(stepFormValues).length ? (
         <UpdateForm
           onSubmit={async (value: any) => {
             const success = await handleUpdate(value);
             if (success) {
-              handleModalVisible(false);
+              handleUpdateModalVisible(false);
               setStepFormValues({});
               if (actionRef.current) {
                 actionRef.current.reload();
