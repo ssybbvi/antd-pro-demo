@@ -101,36 +101,41 @@ export default {
           routes: [
             {
               path: '/',
-              redirect: '/appinfolist',
+              redirect: '/commoditylist',
             },
+            // {
+            //   name: '游戏列表',
+            //   icon: 'smile',
+            //   path: '/appinfolist',
+            //   component: './AppInfoList',
+            // },
+            // {
+            //   path: '/appinfo/:_id',
+            //   component: './AppInfo',
+            // },
+            // {
+            //   name: '权限管理',
+            //   icon: 'smile',
+            //   path: '/listpermission',
+            //   component: './ListPermission',
+            // },
+            // {
+            //   name: '角色管理',
+            //   icon: 'smile',
+            //   path: '/listrole',
+            //   component: './RoleList',
+            // },
+            // {
+            //   name: '用户管理',
+            //   icon: 'smile',
+            //   path: '/userlist',
+            //   component: './UserList',
+            // },
             {
-              name: '游戏列表',
+              name: '商品管理',
               icon: 'smile',
-              path: '/appinfolist',
-              component: './AppInfoList',
-            },
-
-            {
-              path: '/appinfo/:id',
-              component: './AppInfo',
-            },
-            {
-              name: '权限管理',
-              icon: 'smile',
-              path: '/listpermission',
-              component: './ListPermission',
-            },
-            {
-              name: '角色管理',
-              icon: 'smile',
-              path: '/listrole',
-              component: './RoleList',
-            },
-            {
-              name: '用户管理',
-              icon: 'smile',
-              path: '/userlist',
-              component: './UserList',
+              path: '/commoditylist',
+              component: './CommodityList',
             },
             {
               component: './404',
