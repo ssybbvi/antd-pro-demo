@@ -111,7 +111,7 @@ export default {
             },
 
             {
-              path: '/appinfo/:_id',
+              path: '/appinfo/:id',
               component: './AppInfo',
             },
             {

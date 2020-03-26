@@ -10,6 +10,7 @@ import OppoView from './components/OppoView';
 import BiliBiliView from './components/BiliBiliView';
 import QQView from './components/QQView';
 import TouTiaoView from './components/TouTiaoView';
+import NotificationView from './components/NotificationView';
 
 const { Item } = Menu;
 interface AppInfoProps {
@@ -39,6 +40,7 @@ class AppInfo extends Component<AppInfoProps, AppInfoState> {
     super(props);
     const menuMap = {
       base: '基本设置',
+      notification: '预警通知',
       weixin: '微信配置',
       qqapp: 'QQ配置',
       bilibili: 'B站配置',
@@ -56,7 +58,7 @@ class AppInfo extends Component<AppInfoProps, AppInfoState> {
     const { dispatch } = this.props;
     dispatch({
       type: 'appInfo/fetch',
-      payload: this.props.match.params._id,
+      payload: this.props.match.params.id,
     });
     window.addEventListener('resize', this.resize);
     this.resize();
@@ -115,6 +117,9 @@ class AppInfo extends Component<AppInfoProps, AppInfoState> {
     switch (selectKey) {
       case 'base':
         return <BaseView />;
+
+      case 'notification':
+        return <NotificationView />;
 
       case 'weixin':
         return <WeiXinView />;

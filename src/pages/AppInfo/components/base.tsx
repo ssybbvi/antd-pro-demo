@@ -20,7 +20,9 @@ class AppInfoBaseView extends Component<AppInfoBaseViewProps> {
   view: HTMLDivElement | undefined = undefined;
 
   componentDidMount() {
-    this.setBaseInfo();
+    setTimeout(() => {
+      this.setBaseInfo();
+    }, 1000);
   }
 
   setBaseInfo = () => {

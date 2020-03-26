@@ -39,8 +39,9 @@ export interface ModalState {
   registerNotification?: {
     earlyWarningThreshold: number; // 预警阈值
     phones: string[]; // 通知的手机号码
-    isEnabled: boolean; // 是否启用
   };
+
+  userTotal: number;
 }
 
 export type Effect = (
@@ -100,13 +101,13 @@ const Model: ModelType = {
     registerNotification: {
       earlyWarningThreshold: 0, // 预警阈值
       phones: [], // 通知的手机号码
-      isEnabled: false, // 是否启用
     },
   },
 
   effects: {
     *fetch({ payload }, { call, put }) {
       const response = yield call(queryAppInfo, payload);
+      console.log('zzzzz', response);
       yield put({
         type: 'setAppInfo',
         payload: response.data,
@@ -114,9 +115,10 @@ const Model: ModelType = {
     },
     *edit({ payload }, { call, put }) {
       yield call(edit, payload);
+      console.log('xxxxxx123', payload);
       yield put({
         type: 'fetch',
-        payload: {},
+        payload: payload._id,
       });
     },
   },

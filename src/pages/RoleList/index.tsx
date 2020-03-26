@@ -7,6 +7,7 @@ import React, { useState, useRef, useEffect } from 'react';
 import { FormComponentProps } from '@ant-design/compatible/es/form';
 import { PageHeaderWrapper } from '@ant-design/pro-layout';
 import ProTable, { ProColumns, ActionType } from '@ant-design/pro-table';
+import HHGAME from 'hhgame-1.x';
 import CreateForm from './components/CreateForm';
 import UpdateForm, { FormValueType } from './components/UpdateForm';
 import { TableListItem } from './data.d';
@@ -84,6 +85,14 @@ const TableList: React.FC<TableListProps> = () => {
     async function fetchData() {
       const result = await getPermissionList();
       setPermissionValues(result.data.permissions);
+
+      // const hhgame = new HHGAME('CatFill', {
+      //   serverUrl: 'https://honghegame.cn/hh',
+      //   platform: 'Vivogame',
+      // });
+
+      // const result1 = await hhgame.vivogame!.autoLogin();
+      // console.log('zzzzzz', result1);
     }
     fetchData();
   }, []);

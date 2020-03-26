@@ -4,7 +4,7 @@ import axios from '@/utils/axiosRequest';
 export async function query(params: any) {
   return axios({
     method: 'get',
-    url: 'appInfo/${params}',
+    url: `appInfo/${params}`,
   });
 
   // return request('/api/users');
