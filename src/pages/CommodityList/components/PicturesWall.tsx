@@ -1,7 +1,8 @@
 import { Upload, Modal } from 'antd';
 import { PlusOutlined } from '@ant-design/icons';
-import React, { Component, useState } from 'react';
+import React, { Component } from 'react';
 import { UploadFile, UploadListType } from 'antd/lib/upload/interface';
+import defaultSettings from '../../../../config/defaultSettings';
 
 function getBase64(file: any) {
   return new Promise((resolve, reject) => {
@@ -13,7 +14,7 @@ function getBase64(file: any) {
 }
 
 export interface PicturesWallProps {
-  listType:UploadListType
+  listType: UploadListType;
   images: string[];
   onChange?: (iamges: string[]) => void;
 }
@@ -21,21 +22,23 @@ export interface PicturesWallProps {
 export interface PicturesWallState {
   previewVisible: boolean;
   previewImage: string;
-  fileList:  UploadFile<any>[];
+  fileList: UploadFile<any>[];
 }
 
 export class PicturesWall extends Component<PicturesWallProps, PicturesWallState> {
   constructor(props: PicturesWallProps) {
     super(props);
 
-    const _fileList = props.images.map((item, index) => {
-      return {
-        uid: `${index * -1}`,
-        name: item,
-        status: 'done',
-        url: item,
-      } as  UploadFile<any>
-    })  
+    // eslint-disable-next-line no-underscore-dangle
+    const _fileList = props.images.map(
+      (item, index) =>
+        ({
+          uid: `${index * -1}`,
+          name: item,
+          status: 'done',
+          url: item,
+        } as UploadFile<any>),
+    );
 
     this.state = {
       previewVisible: false,
@@ -48,6 +51,7 @@ export class PicturesWall extends Component<PicturesWallProps, PicturesWallState
 
   handlePreview = async (file: any) => {
     if (!file.url && !file.preview) {
+      // eslint-disable-next-line no-param-reassign
       file.preview = await getBase64(file.originFileObj);
     }
 
@@ -59,21 +63,20 @@ export class PicturesWall extends Component<PicturesWallProps, PicturesWallState
 
   handleChange = ({ fileList }) => {
     this.setState({ fileList });
+    // eslint-disable-next-line no-underscore-dangle
     const _fileList = fileList as [];
 
-    if (_fileList.every(item => item['status'] === 'done')) {
+    if (_fileList.every(item => item.status === 'done')) {
       const { onChange } = this.props;
-      console.log(JSON.parse(JSON.stringify(_fileList)));
       const imges = _fileList.map((item: any) => item.url || item.response.url);
-      if(onChange){
+      if (onChange) {
         onChange(imges);
       }
-      
     }
   };
-//"picture-card"
+
   render() {
-    const {listType} =this.props
+    const { listType } = this.props;
     const { previewVisible, previewImage, fileList } = this.state;
     const uploadButton = (
       <div>
@@ -84,8 +87,8 @@ export class PicturesWall extends Component<PicturesWallProps, PicturesWallState
     return (
       <div className="clearfix">
         <Upload
-          multiple={true}
-          action="http://127.0.0.1:5000/api/v1/upload"
+          multiple
+          action={`${defaultSettings.apiUrl}upload`}
           listType={listType}
           fileList={fileList}
           onPreview={this.handlePreview}
