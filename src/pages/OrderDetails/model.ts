@@ -2,7 +2,7 @@ import { AnyAction, Reducer } from 'redux';
 
 import { EffectsCommandMap } from 'dva';
 import { OrderDataDtoType } from './data.d';
-import { queryBasicProfile } from './service';
+import { getOrderDetails } from './service';
 
 export interface StateType {
   order: OrderDataDtoType
@@ -51,7 +51,7 @@ const Model: ModelType = {
 
   effects: {
     *fetchBasic({ payload }, { call, put }) {
-      const response = yield call(queryBasicProfile, payload);
+      const response = yield call(getOrderDetails, payload);
       yield put({
         type: 'show',
         payload: response.data,

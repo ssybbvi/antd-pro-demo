@@ -37,3 +37,10 @@ export interface OrderDataDtoType {
 
   items: OrderItemDto[]
 }
+
+
+export interface ShippedParams {
+  orderId: string
+  shippedNumber: string
+  shippedType: string
+}

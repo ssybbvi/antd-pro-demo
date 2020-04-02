@@ -1,11 +1,15 @@
-import { Badge, Card, Descriptions, Divider, Table } from 'antd';
-import React, { Component } from 'react';
+import { Badge, Card, Descriptions, Divider, Table, Buttom, Button, Input, message } from 'antd';
+import React, { Component, useState, useRef } from 'react';
 
 import { Dispatch } from 'redux';
 import { PageHeaderWrapper } from '@ant-design/pro-layout';
 import { connect } from 'dva';
-import { OrderDataDtoType } from './data.d';
+import { OrderDataDtoType, ShippedParams } from './data.d';
 import styles from './style.less';
+import { showStatusName } from '../OrderList/data';
+import AuditForm from './components/AuditForm';
+import { shipped, received } from './service';
+import { ActionType } from '@ant-design/pro-table';
 
 // const progressColumns = [
 //   {
@@ -42,6 +46,42 @@ import styles from './style.less';
 //   },
 // ];
 
+
+/**
+ * 添加节点
+ * @param fields
+ */
+const Shipped = async (fields: ShippedParams) => {
+  const hide = message.loading('正在提交');
+  try {
+    await shipped(fields);
+    hide();
+    message.success('添加提交');
+    return true;
+  } catch (error) {
+    hide();
+    message.error('提交失败请重试！');
+    return false;
+  }
+};
+
+const Received = async (orderId: string) => {
+  const hide = message.loading('正在提交');
+  try {
+    await received(orderId);
+    hide();
+    message.success('添加提交');
+    return true;
+  } catch (error) {
+    hide();
+    message.error('提交失败请重试！');
+    return false;
+  }
+};
+
+
+
+
 interface OrderDetailsProps {
   loading: boolean;
   dispatch: Dispatch<any>;
@@ -49,13 +89,24 @@ interface OrderDetailsProps {
 }
 interface OrderDetailsState {
   visible: boolean;
+  auditModal: boolean
 }
 
 class OrderDetails extends Component<
   OrderDetailsProps,
   OrderDetailsState
   > {
+
+  state: OrderDetailsState = {
+    visible: false,
+    auditModal: false
+  }
+
   componentDidMount() {
+    this.loadInfo()
+  }
+
+  loadInfo = () => {
     const { dispatch } = this.props;
     dispatch({
       type: 'orderDetails/fetchBasic',
@@ -63,23 +114,19 @@ class OrderDetails extends Component<
     });
   }
 
+  handleModalVisible = (auditModal: boolean) => {
+    this.setState({
+      auditModal
+    })
+  }
+
+
+
   render() {
     const { orderDetails, loading } = this.props;
     const { items } = orderDetails;
+    const { auditModal } = this.state
 
-    const renderContent = (value: any, row: any, index: any) => {
-      const obj: {
-        children: any;
-        props: { colSpan?: number };
-      } = {
-        children: value,
-        props: {},
-      };
-      if (index === items.length) {
-        obj.props.colSpan = 0;
-      }
-      return obj;
-    };
     const goodsColumns = [
       {
         title: '商品名称',
@@ -93,10 +140,36 @@ class OrderDetails extends Component<
         title: '单价',
         dataIndex: 'price',
         key: 'price',
-        align: 'right' as 'left' | 'right' | 'center',
-        render: renderContent,
+        render: (text: React.ReactNode, row: any, index: number) => {
+          return text
+        }
       },
     ];
+
+    const showStatusName = (status: string) => {
+      if (status === "unpaid") {
+        return "未支付"
+      }
+
+      if (status === "shipping") {
+        return "待发货"
+      }
+
+      if (status === "shipped") {
+        return "已发货"
+      }
+
+      if (status === "received") {
+        return "已完成"
+      }
+
+      if (status === "cancel") {
+        return "已取消"
+      }
+
+      return "未知"
+    }
+
     return (
       <PageHeaderWrapper>
         <Card bordered={false}>
@@ -104,7 +177,7 @@ class OrderDetails extends Component<
           <Descriptions title="订单详情" style={{ marginBottom: 32 }}>
             <Descriptions.Item label="价格">{orderDetails.price}</Descriptions.Item>
             <Descriptions.Item label="订单编号">{orderDetails.code}</Descriptions.Item>
-            <Descriptions.Item label="状态">{orderDetails.status}</Descriptions.Item>
+            <Descriptions.Item label="状态">{showStatusName(orderDetails.status)}</Descriptions.Item>
             <Descriptions.Item label="备注">{orderDetails.remark}</Descriptions.Item>
             <Descriptions.Item label="支付时间">{orderDetails.paymentTime}</Descriptions.Item>
             <Descriptions.Item label="发货时间">{orderDetails.shippingTime}</Descriptions.Item>
@@ -144,7 +217,40 @@ class OrderDetails extends Component<
             dataSource={basicProgress}
             columns={progressColumns}
           /> */}
+
         </Card>
+
+        {orderDetails.status === "shipping" ? <Card bordered={false}>
+          <Button type="primary" onClick={() => {
+            this.handleModalVisible(true)
+          }} >发货</Button>
+        </Card> : null}
+
+        {orderDetails.status === "shipped" ?
+          <Card bordered={false}>
+            <Button type="primary" onClick={async () => {
+              const success = await Received(this.props.match.params.orderId)
+              if (success) {
+                this.loadInfo()
+              }
+            }}>确认收货</Button>
+          </Card> : null}
+
+
+
+
+        <AuditForm
+          onSubmit={async (value: any) => {
+            value.orderId = this.props.match.params.orderId
+            const success = await Shipped(value);
+            if (success) {
+              this.handleModalVisible(false);
+              this.loadInfo()
+            }
+          }}
+          onCancel={() => this.handleModalVisible(false)}
+          AuditModalVisible={auditModal}
+        />
       </PageHeaderWrapper>
     );
   }
