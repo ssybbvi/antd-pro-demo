@@ -7,7 +7,7 @@ import { PicturesWall } from './PicturesWall';
 import { CommodityTableListItem } from '../data';
 import EditableTagGroup from './EditableTagGroup';
 
-export interface FormValueType extends Omit<CommodityTableListItem,"_id"> {}
+export interface FormValueType extends Omit<CommodityTableListItem, "_id"> { }
 
 interface CreateFormProps extends FormComponentProps {
   onCancel: (flag?: boolean, formVals?: CommodityTableListItem) => void;
@@ -24,8 +24,8 @@ export interface UpdateFormState {
 
 class CreateForm extends Component<CreateFormProps, UpdateFormState> {
   static defaultProps = {
-    handleUpdate: () => {},
-    handlecreateModalVisible: () => {},
+    handleUpdate: () => { },
+    handlecreateModalVisible: () => { },
   };
 
   formLayout = {
@@ -39,14 +39,14 @@ class CreateForm extends Component<CreateFormProps, UpdateFormState> {
     this.state = {
       formVals: {
         name: "",
-        price:1,
+        price: 1,
         descrption: "",
         images: [],
         fakePrice: "",
         sales: 0,
-        restrictedPurchaseQuantity:5,
-        tags:[],
-        imgesDescrptionList:[],
+        restrictedPurchaseQuantity: 5,
+        tags: [],
+        imgesDescrptionList: [],
       },
     };
   }
@@ -62,6 +62,19 @@ class CreateForm extends Component<CreateFormProps, UpdateFormState> {
           formVals,
         },
         () => {
+          this.setState({
+            formVals: {
+              name: "",
+              price: 1,
+              descrption: "",
+              images: [],
+              fakePrice: "",
+              sales: 0,
+              restrictedPurchaseQuantity: 5,
+              tags: [],
+              imgesDescrptionList: [],
+            }
+          })
           handleUpdate(formVals);
         },
       );
@@ -78,11 +91,11 @@ class CreateForm extends Component<CreateFormProps, UpdateFormState> {
         })(<Input placeholder="请输入" />)}
       </FormItem>,
       <FormItem key="images" {...this.formLayout} label="图片">
-      {form.getFieldDecorator('images', {
-        rules: [],
-        initialValue: formVals.images,
-      })(<PicturesWall images={formVals.images!} listType={"picture-card"}></PicturesWall>)}
-    </FormItem>,
+        {form.getFieldDecorator('images', {
+          rules: [],
+          initialValue: formVals.images,
+        })(<PicturesWall images={formVals.images!} listType={"picture-card"}></PicturesWall>)}
+      </FormItem>,
       <FormItem key="price" {...this.formLayout} label="积分">
         {form.getFieldDecorator('price', {
           rules: [],
@@ -105,16 +118,16 @@ class CreateForm extends Component<CreateFormProps, UpdateFormState> {
         {form.getFieldDecorator('descrption', {
           rules: [],
           initialValue: formVals.descrption,
-        })(<TextArea rows={4}   />)}
+        })(<TextArea rows={4} />)}
       </FormItem>,
 
       <FormItem key="imgesDescrptionList" {...this.formLayout} label="商品图片描述">
-         {form.getFieldDecorator('imgesDescrptionList', {
-           rules: [], 
-           initialValue: formVals.imgesDescrptionList,
-         })(<PicturesWall images={formVals.imgesDescrptionList!} listType={"picture"}></PicturesWall>)}
+        {form.getFieldDecorator('imgesDescrptionList', {
+          rules: [],
+          initialValue: formVals.imgesDescrptionList,
+        })(<PicturesWall images={formVals.imgesDescrptionList!} listType={"picture"}></PicturesWall>)}
       </FormItem>,
-      
+
       <FormItem key="tags" {...this.formLayout} label="标签">
         {form.getFieldDecorator('tags', {
           rules: [],

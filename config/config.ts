@@ -141,12 +141,14 @@ export default {
               icon: 'smile',
               path: '/orderlist',
               component: './OrderList',
+
             },
             {
               name: '订单详情',
               icon: 'smile',
               path: '/orderdetails/:orderId',
               component: './OrderDetails',
+              hideInMenu: 'true'
             },
             {
               component: './404',
