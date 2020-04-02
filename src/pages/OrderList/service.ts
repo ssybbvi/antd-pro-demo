@@ -10,7 +10,7 @@ export async function queryFakeList(params: ParamsType) {
   const result = (
     await axios({
       method: 'get',
-      url: 'order',
+      url: 'order/temp',
       data: params,
     })
   ).data;

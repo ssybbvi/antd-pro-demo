@@ -187,24 +187,72 @@ class OrderList extends Component<
       total: 50,
     };
 
+    const GetTimeByStatus = ({
+      data: { createAt, paymentTime, shippingTime, finishTime, status, cancelTime },
+    }: {
+      data: BasicListItemDataType;
+    }) => {
+      if (status === "unpaid") {
+        return (
+          <div className={styles.listContentItem}>
+            <span>下单时间</span>
+            <p>{moment(createAt).format('YYYY-MM-DD HH:mm')}</p>
+          </div>
+        )
+      }
+
+      if (status === "shipping") {
+        return (
+          <div className={styles.listContentItem}>
+            <span>支付时间</span>
+            <p>{moment(paymentTime).format('YYYY-MM-DD HH:mm')}</p>
+          </div>
+        )
+      }
+
+      if (status === "shipped") {
+        return (
+          <div className={styles.listContentItem}>
+            <span>发货时间</span>
+            <p>{moment(shippingTime).format('YYYY-MM-DD HH:mm')}</p>
+          </div>
+        )
+      }
+
+      if (status === "received") {
+        return (
+          <div className={styles.listContentItem}>
+            <span>收货时间</span>
+            <p>{moment(finishTime).format('YYYY-MM-DD HH:mm')}</p>
+          </div>
+        )
+      }
+
+      if (status === "cancel") {
+        return (
+          <div className={styles.listContentItem}>
+            <span>取消时间</span>
+            <p>{moment(cancelTime).format('YYYY-MM-DD HH:mm')}</p>
+          </div>
+        )
+      }
+    }
+
     const ListContent = ({
-      data: { createAt, userName, status },
+      data
     }: {
       data: BasicListItemDataType;
     }) => (
         <div className={styles.listContent}>
           <div className={styles.listContentItem}>
-            <span>收货人</span>
-            <p>{userName}</p>
-          </div>
-          <div className={styles.listContentItem}>
-            <span>下单时间</span>
-            <p>{moment(createAt).format('YYYY-MM-DD HH:mm')}</p>
+            <span>订单号</span>
+            <p>{data.code}</p>
           </div>
           <div className={styles.listContentItem}>
             <span>订单状态</span>
-            <p>{showStatusName(status)}</p>
+            <p>{showStatusName(data.status)}</p>
           </div>
+          <GetTimeByStatus data={data} />
         </div>
       );
 
@@ -231,23 +279,6 @@ class OrderList extends Component<
 
       return "未知"
     }
-
-    const MoreBtn: React.FC<{
-      item: BasicListItemDataType;
-    }> = ({ item }) => (
-      <Dropdown
-        overlay={
-          <Menu onClick={({ key }) => editAndDelete(key, item)}>
-            <Menu.Item key="edit">编辑</Menu.Item>
-            <Menu.Item key="delete">删除</Menu.Item>
-          </Menu>
-        }
-      >
-        <a>
-          更多 <DownOutlined />
-        </a>
-      </Dropdown>
-    );
 
     const getModalContent = () => {
       if (done) {
@@ -276,7 +307,7 @@ class OrderList extends Component<
           <FormItem label="开始时间" {...this.formLayout}>
             {getFieldDecorator('createdAt', {
               rules: [{ required: true, message: '请选择开始时间' }],
-              initialValue: current.createdAt ? moment(current.createdAt) : null,
+              initialValue: current.createAt ? moment(current.createAt) : null,
             })(
               <DatePicker
                 showTime
@@ -311,7 +342,7 @@ class OrderList extends Component<
       <>
         <PageHeaderWrapper>
           <div className={styles.standardList}>
-            <Card bordered={false}>
+            {/* <Card bordered={false}>
               <Row>
                 <Col sm={8} xs={24}>
                   <Info title="我的待办" value="8个任务" bordered />
@@ -323,7 +354,7 @@ class OrderList extends Component<
                   <Info title="本周完成任务数" value="24个任务" />
                 </Col>
               </Row>
-            </Card>
+            </Card> */}
 
             <Card
               className={styles.listCard}
@@ -333,18 +364,6 @@ class OrderList extends Component<
               bodyStyle={{ padding: '0 32px 40px 32px' }}
               extra={extraContent}
             >
-              <Button
-                type="dashed"
-                style={{ width: '100%', marginBottom: 8 }}
-                onClick={this.showModal}
-                ref={component => {
-                  // eslint-disable-next-line  react/no-find-dom-node
-                  this.addBtn = findDOMNode(component) as HTMLButtonElement;
-                }}
-              >
-                <PlusOutlined />
-                添加
-              </Button>
               <List
                 size="large"
                 rowKey="id"
@@ -361,15 +380,13 @@ class OrderList extends Component<
                           this.showEditModal(item);
                         }}
                       >
-                        编辑
-                      </a>,
-                      <MoreBtn key="more" item={item} />,
+                        审核
+                      </a>
                     ]}
                   >
                     <List.Item.Meta
                       avatar={<Avatar src={item.items[0].image} shape="square" size="large" />}
                       title={<a href={``}>{item.items[0].name}</a>}
-                      description={`暂无`}
                     />
                     <ListContent data={item} />
                   </List.Item>

@@ -51,11 +51,6 @@ const TableList: React.FC<TableListProps> = () => {
       renderText: (val: string) => `${val}人`,
     },
     {
-      title: '预警通知状态',
-      dataIndex: 'isEnabled',
-      renderText: (val: boolean) => `${val ? '启用' : '关闭'}`,
-    },
-    {
       title: '操作',
       dataIndex: 'option',
       valueType: 'option',

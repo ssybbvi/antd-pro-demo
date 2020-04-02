@@ -40,6 +40,7 @@ export interface DefaultSettings {
   // Usage: https://github.com/ant-design/ant-design-pro/pull/3517
   iconfontUrl: string;
   colorWeak: boolean;
+  apiUrl: string;
 }
 
 export default {
@@ -58,4 +59,5 @@ export default {
   title: '小爱灵动',
   pwa: false,
   iconfontUrl: '',
+  apiUrl: process.env.xald_api_url || 'http://127.0.0.1:5000/api/v1/',// 'http://test-jifenyuedui.ixald.com/api/v1/',
 } as DefaultSettings;
