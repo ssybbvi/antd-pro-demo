@@ -10,6 +10,7 @@ import CreateForm , { FormValueType }from './components/CreateForm';
 import UpdateForm from './components/UpdateForm';
 import { CommodityTableListItem } from './data.d';
 import { queryRule, updateRule, addRule, removeRule } from './service';
+import hhgame from 'hhgame'
 
 interface TableListProps extends FormComponentProps {}
 
@@ -72,6 +73,12 @@ const handleRemove = async (selectedRows: CommodityTableListItem[]) => {
 };
 
 const TableList: React.FC<TableListProps> = () => {
+
+  // console.log(11111)
+  // const hh= new hhgame("emoji",{serverUrl:"http://game.ixald.com"})
+  // hh.stat.submitAction("aaa")
+  // console.log(22222)
+
   const [createModalVisible, handleModalVisible] = useState<boolean>(false);
   const [updateModalVisible, handleUpdateModalVisible] = useState<boolean>(false);
   const [stepFormValues, setStepFormValues] = useState({});

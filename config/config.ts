@@ -102,8 +102,7 @@ export default {
             {
               path: '/',
               redirect: '/commoditylist',
-            },
-            // {
+            }, // {
             //   name: '游戏列表',
             //   icon: 'smile',
             //   path: '/appinfolist',
@@ -136,6 +135,12 @@ export default {
               icon: 'smile',
               path: '/commoditylist',
               component: './CommodityList',
+            },
+            {
+              name: '订单列表',
+              icon: 'smile',
+              path: '/orderlist',
+              component: './OrderList',
             },
             {
               component: './404',
@@ -171,7 +176,7 @@ export default {
         resourcePath: string;
       },
       _: string,
-      localName: string,
+      localName: string
     ) => {
       if (
         context.resourcePath.includes('node_modules') ||
