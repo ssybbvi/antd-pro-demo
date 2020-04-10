@@ -12,7 +12,7 @@ export async function fakeAccountLogin(params: LoginParamsType) {
   return (
     await axios({
       method: 'post',
-      url: 'users/login',
+      url: 'up/authorization',
       data: params,
     })
   ).data;

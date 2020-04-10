@@ -59,5 +59,5 @@ export default {
   title: '小爱灵动',
   pwa: false,
   iconfontUrl: '',
-  apiUrl: process.env.xald_api_url || 'http://127.0.0.1:5000/api/v1/',// 'http://test-jifenyuedui.ixald.com/api/v1/',
+  apiUrl: process.env.xald_api_url || 'http://test-jifenyuedui.ixald.com/api/v1/',//'http://127.0.0.1:5000/api/v1/',// 
 } as DefaultSettings;

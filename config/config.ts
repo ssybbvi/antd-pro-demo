@@ -83,12 +83,6 @@ export default {
           path: '/user/login',
           component: './user/login',
         },
-        {
-          name: '查询表格',
-          icon: 'smile',
-          path: '/userlist',
-          component: './UserList',
-        },
       ],
     },
     {
@@ -115,21 +109,58 @@ export default {
             // {
             //   name: '权限管理',
             //   icon: 'smile',
-            //   path: '/listpermission',
-            //   component: './ListPermission',
+            //   children: [
+            //     {
+            //       name: '用户管理',
+            //       path: '/userlist',
+            //     },
+            //     {
+            //       name: '权限管理',
+            //       path: '/listpermission',
+            //     },
+            //     {
+            //       name: '角色管理',
+            //       path: '/listrole',
+            //     },
+            //   ]
             // },
-            // {
-            //   name: '角色管理',
-            //   icon: 'smile',
-            //   path: '/listrole',
-            //   component: './RoleList',
-            // },
-            // {
-            //   name: '用户管理',
-            //   icon: 'smile',
-            //   path: '/userlist',
-            //   component: './UserList',
-            // },
+            {
+              name: "授权管理",
+              path: "xxx",
+              icon: 'smile',
+              children: [
+                {
+                  "path": "/xxx/userlist",
+                  "name": "用户管理"
+                },
+                {
+                  "path": "/xxx/listpermission",
+                  "name": "权限管理"
+                },
+                {
+                  "path": "/xxx/listrole",
+                  "name": "角色管理"
+                }
+              ]
+            },
+            {
+              name: '用户管理',
+              path: '/xxx/userlist',
+              component: './UserList',
+              hideInMenu: true
+            },
+            {
+              name: '权限管理',
+              path: '/xxx/listpermission',
+              component: './ListPermission',
+              hideInMenu: true
+            },
+            {
+              name: '角色管理',
+              path: '/xxx/listrole',
+              component: './RoleList',
+              hideInMenu: true
+            },
             {
               name: '商品管理',
               icon: 'smile',
@@ -141,14 +172,13 @@ export default {
               icon: 'smile',
               path: '/orderlist',
               component: './OrderList',
-
             },
             {
               name: '订单详情',
               icon: 'smile',
               path: '/orderdetails/:orderId',
               component: './OrderDetails',
-              hideInMenu: 'true'
+              hideInMenu: 'true',
             },
             {
               component: './404',
